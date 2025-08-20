@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCycle - AI-Powered Medicine Redistribution Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'med-blue': '#2563EB',
+                        'med-teal': '#059669',
+                        'med-green': '#10B981',
+                        'med-gray': '#F9FAFB'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-inter bg-med-gray">
+    <!-- Navigation Component -->
+    <!-- @COMPONENT: NavigationHeader [showUserMenu: boolean, userRole: string] -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-pills text-med-blue text-2xl mr-3"></i>
+                        <span class="text-xl font-bold text-gray-900">MedCycle</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button data-event="click:toggleNotifications" class="relative p-2 text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span data-bind="notificationCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    <div class="relative">
+                        <button data-event="click:toggleUserMenu" class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-med-blue">
+                            <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=32&h=32" alt="User avatar" data-mock="true">
+                            <span data-bind="user.organizationName" class="ml-2 text-gray-700">City Hospital</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationHeader -->
+
+    <div class="min-h-screen bg-med-gray">
+        <!-- Landing Page Section -->
+        <!-- @COMPONENT: LandingPage -->
+        <div id="landing-page" class="block">
+            <!-- Hero Section -->
+            <!-- A modern medical facility with healthcare professionals in the background -->
+            <div class="relative bg-gradient-to-r from-med-blue to-med-teal py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                            MedCycle
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                            AI-Powered Medicine Redistribution Network - Reducing pharmaceutical waste and improving medicine accessibility in India
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button data-event="click:showRegistration" class="bg-white text-med-blue px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-user-plus mr-2"></i>Sign Up
+                            </button>
+                            <button data-event="click:showLogin" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-med-blue transition-colors">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Login
+                            </button>
+                            <button data-event="click:showAdminLogin" class="bg-med-green text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                                <i class="fas fa-cog mr-2"></i>Admin Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose MedCycle?</h2>
+                        <p class="text-lg text-gray-600">Secure, efficient, and transparent medicine redistribution</p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="text-center p-6">
+                            <div class="bg-med-blue rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shield-alt text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">AI-Powered Verification</h3>
+                            <p class="text-gray-600">Automated verification of healthcare entities and medicine authenticity using advanced AI</p>
+                        </div>
+                        <div class="text-center p-6">
+                            <div class="bg-med-teal rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-map-marker-alt text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Location-Based Matching</h3>
+                            <p class="text-gray-600">Smart geolocation matching to connect nearby healthcare providers efficiently</p>
+                        </div>
+                        <div class="text-center p-6">
+                            <div class="bg-med-green rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-recycle text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Reduce Waste</h3>
+                            <p class="text-gray-600">Minimize pharmaceutical waste by redistributing near-expiry medicines</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: LandingPage -->
+
+        <!-- Registration Page Section -->
+        <!-- @COMPONENT: RegistrationForm [userType: string, validationErrors: object] -->
+        <div id="registration-page" class="hidden">
+            <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg">
+                    <div class="px-6 py-8">
+                        <div class="text-center mb-8">
+                            <i class="fas fa-user-plus text-med-blue text-4xl mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Register Your Organization</h2>
+                            <p class="text-gray-600 mt-2">Join the MedCycle network</p>
+                        </div>
+
+                        <form data-implementation="Should validate all fields and submit to backend API">
+                            <!-- User Type Selection -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Organization Type</label>
+                                <select data-bind="userType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue focus:border-transparent" data-mock="true">
+                                    <option value="">Select Organization Type</option>
+                                    <option value="hospital">Hospital</option>
+                                    <option value="pharmacy">Pharmacy</option>
+                                    <option value="medical_shop">Medical Shop</option>
+                                </select>
+                            </div>
+
+                            <!-- Organization Details -->
+                            <div class="grid grid-cols-1 gap-4 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Organization Name</label>
+                                    <input type="text" data-bind="organizationName" placeholder="Enter organization name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Owner Name</label>
+                                    <input type="text" data-bind="ownerName" placeholder="Enter owner/authorized person name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                    <input type="email" data-bind="email" placeholder="Enter email address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                                    <input type="tel" data-bind="mobile" placeholder="Enter mobile number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
+                                    <input type="text" data-bind="pinCode" placeholder="Enter organization PIN code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Government ID Number</label>
+                                    <input type="text" data-bind="govIdNumber" placeholder="Drug License / Hospital Registration Number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+                                    <input type="text" data-bind="aadhaarNumber" placeholder="Enter Aadhaar number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                    <input type="password" data-bind="password" placeholder="Create a strong password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                            </div>
+
+                            <button type="submit" data-event="click:handleRegistration" class="w-full bg-med-blue text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-check mr-2"></i>Register & Verify
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center">
+                            <button data-event="click:showLogin" class="text-med-blue hover:text-blue-700">
+                                Already have an account? Login here
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: RegistrationForm -->
+
+        <!-- Login Page Section -->
+        <!-- @COMPONENT: LoginForm [loginType: string] -->
+        <div id="login-page" class="hidden">
+            <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg">
+                    <div class="px-6 py-8">
+                        <div class="text-center mb-8">
+                            <i class="fas fa-sign-in-alt text-med-blue text-4xl mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Welcome Back</h2>
+                            <p class="text-gray-600 mt-2">Sign in to your MedCycle account</p>
+                        </div>
+
+                        <form data-implementation="Should authenticate user and redirect based on role">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
+                                <input type="text" data-bind="loginIdentifier" placeholder="Enter email or username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <input type="password" data-bind="password" placeholder="Enter password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                            </div>
+
+                            <button type="submit" data-event="click:handleLogin" class="w-full bg-med-blue text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center">
+                            <button data-event="click:showRegistration" class="text-med-blue hover:text-blue-700">
+                                Don't have an account? Register here
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: LoginForm -->
+
+        <!-- Admin Login Page Section -->
+        <!-- @COMPONENT: AdminLoginForm -->
+        <div id="admin-login-page" class="hidden">
+            <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg">
+                    <div class="px-6 py-8">
+                        <div class="text-center mb-8">
+                            <i class="fas fa-cog text-med-green text-4xl mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Admin Login</h2>
+                            <p class="text-gray-600 mt-2">Administrative access to MedCycle</p>
+                        </div>
+
+                        <form data-implementation="Should authenticate admin user">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Admin Username</label>
+                                <input type="text" data-bind="adminUsername" placeholder="Enter admin username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Admin Password</label>
+                                <input type="password" data-bind="adminPassword" placeholder="Enter admin password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                            </div>
+
+                            <button type="submit" data-event="click:handleAdminLogin" class="w-full bg-med-green text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors font-medium">
+                                <i class="fas fa-cog mr-2"></i>Admin Sign In
+                            </button>
+                        </form>
+
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                            <p class="text-sm text-yellow-800">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Default credentials: admin / admin
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AdminLoginForm -->
+
+        <!-- Role Selection Page -->
+        <!-- @COMPONENT: RoleSelection [userRole: object] -->
+        <div id="role-selection-page" class="hidden">
+            <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-4">What would you like to do today?</h1>
+                        <p class="text-lg text-gray-600">Choose your role to get started</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow cursor-pointer" data-event="click:selectSenderRole">
+                            <div class="text-center">
+                                <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-paper-plane text-med-blue text-3xl"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-4">Send Medicines</h2>
+                                <p class="text-gray-600 mb-6">List your near-expiry medicines for redistribution to other healthcare providers</p>
+                                <button class="bg-med-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                    I want to Send Medicines
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow cursor-pointer" data-event="click:selectReceiverRole">
+                            <div class="text-center">
+                                <div class="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-search text-med-green text-3xl"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-4">Receive Medicines</h2>
+                                <p class="text-gray-600 mb-6">Search and purchase medicines from nearby healthcare providers at reduced costs</p>
+                                <button class="bg-med-green text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                                    I want to Receive Medicines
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: RoleSelection -->
+
+        <!-- Sender Dashboard -->
+        <!-- @COMPONENT: SenderDashboard [sentMedicines: array, pendingApprovals: number] -->
+        <div id="sender-dashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Sender Dashboard</h1>
+                    <p class="text-gray-600">Manage your medicine listings and track sent medicines</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 rounded-full p-3">
+                                <i class="fas fa-pills text-med-blue text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Listed</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.totalListed">24</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Pending Approval</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.pendingApproval">3</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 rounded-full p-3">
+                                <i class="fas fa-check-circle text-med-green text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Sold</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.sold">18</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 rounded-full p-3">
+                                <i class="fas fa-rupee-sign text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Revenue</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.revenue">₹45,230</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6">
+                            <button data-event="click:showSendMedicine" class="py-4 px-1 border-b-2 border-med-blue text-med-blue font-medium">
+                                <i class="fas fa-plus mr-2"></i>Send Medicine
+                            </button>
+                            <button data-event="click:showMySentMedicines" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-list mr-2"></i>My Sent Medicines
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Send Medicine Form -->
+                    <div id="send-medicine-form" class="p-6">
+                        <h2 class="text-xl font-semibold mb-6">List New Medicine</h2>
+                        <form data-implementation="Should validate and submit medicine data with OCR processing">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Medicine Name</label>
+                                    <input type="text" data-bind="medicineName" placeholder="Enter medicine name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                                    <input type="text" data-bind="company" placeholder="Enter company name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                    <input type="date" data-bind="expiryDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batch Number</label>
+                                    <input type="text" data-bind="batchNumber" placeholder="Enter batch number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                                    <input type="number" data-bind="quantity" placeholder="Enter quantity" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Cost per Unit (₹)</label>
+                                    <input type="number" step="0.01" data-bind="costPerUnit" placeholder="Enter cost per unit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-blue" data-mock="true">
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Medicine Package Photo</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-med-blue transition-colors">
+                                    <i class="fas fa-camera text-gray-400 text-3xl mb-2"></i>
+                                    <p class="text-gray-600 mb-2">Upload medicine package image for AI verification</p>
+                                    <input type="file" accept="image/*" data-bind="medicineImage" class="hidden" data-implementation="Should process image with OCR for verification">
+                                    <button type="button" data-event="click:selectImage" class="bg-med-blue text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                        Select Image
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex items-center">
+                                <input type="checkbox" data-bind="sealConfirmation" class="h-4 w-4 text-med-blue focus:ring-med-blue border-gray-300 rounded" data-mock="true">
+                                <label class="ml-2 text-sm text-gray-700">I confirm that the medicine package is sealed and safe</label>
+                            </div>
+
+                            <button type="submit" data-event="click:submitMedicine" class="mt-6 bg-med-blue text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors font-medium">
+                                <i class="fas fa-check mr-2"></i>Submit for AI Verification
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- My Sent Medicines -->
+                <div id="my-sent-medicines" class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold">My Listed Medicines</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Medicine</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Expiry</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- @MAP: sentMedicines.map(medicine => ( -->
+                                <tr data-mock="true">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900" data-bind="medicine.name">Paracetamol 500mg</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="medicine.company">Cipla Ltd</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="medicine.expiry">Mar 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="medicine.quantity">100</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="medicine.price">₹2.50</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800" data-bind="medicine.status">Approved</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button data-event="click:editMedicine" class="text-med-blue hover:text-blue-700 mr-3">Edit</button>
+                                        <button data-event="click:deleteMedicine" class="text-red-600 hover:text-red-700">Delete</button>
+                                    </td>
+                                </tr>
+                                <!-- @END_MAP )) -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: SenderDashboard -->
+
+        <!-- Receiver Dashboard -->
+        <!-- @COMPONENT: ReceiverDashboard [searchResults: array, cartItems: array, orders: array] -->
+        <div id="receiver-dashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Receiver Dashboard</h1>
+                    <p class="text-gray-600">Search and purchase medicines from nearby healthcare providers</p>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6">
+                            <button data-event="click:showSearchMedicines" class="py-4 px-1 border-b-2 border-med-green text-med-green font-medium">
+                                <i class="fas fa-search mr-2"></i>Search Medicines
+                            </button>
+                            <button data-event="click:showMyCart" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-shopping-cart mr-2"></i>My Cart
+                                <span data-bind="cartCount" class="bg-red-500 text-white text-xs rounded-full px-2 py-1 ml-1">2</span>
+                            </button>
+                            <button data-event="click:showMyOrders" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-clipboard-list mr-2"></i>My Orders
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Search Medicine Form -->
+                    <div id="search-medicine-form" class="p-6">
+                        <h2 class="text-xl font-semibold mb-6">Search Available Medicines</h2>
+                        <form data-implementation="Should search medicines with geolocation filtering">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Medicine Name</label>
+                                    <input type="text" data-bind="searchMedicineName" placeholder="Enter medicine name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
+                                    <input type="text" data-bind="searchPinCode" placeholder="Enter your PIN code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                </div>
+                            </div>
+
+                            <!-- Advanced Filters -->
+                            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                                <h3 class="text-lg font-medium mb-4">Advanced Filters</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Min Expiry (Months)</label>
+                                        <input type="number" data-bind="minExpiryMonths" placeholder="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Dosage</label>
+                                        <input type="text" data-bind="dosage" placeholder="500mg" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Min Quantity</label>
+                                        <input type="number" data-bind="minQuantity" placeholder="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Max Cost (₹)</label>
+                                        <input type="number" step="0.01" data-bind="maxCost" placeholder="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-med-green" data-mock="true">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" data-event="click:searchMedicines" class="bg-med-green text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors font-medium">
+                                <i class="fas fa-search mr-2"></i>Search Medicines
+                            </button>
+                        </form>
+
+                        <!-- Search Results -->
+                        <div class="mt-8">
+                            <h3 class="text-lg font-semibold mb-4">Search Results</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- @MAP: searchResults.map(medicine => ( -->
+                                <div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-900" data-bind="medicine.name">Paracetamol 500mg</h4>
+                                            <p class="text-sm text-gray-600" data-bind="medicine.company">Cipla Ltd</p>
+                                        </div>
+                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Expiry:</span>
+                                            <span data-bind="medicine.expiry">Mar 2024</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Quantity:</span>
+                                            <span data-bind="medicine.quantity">100 units</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Price:</span>
+                                            <span class="font-semibold text-med-green" data-bind="medicine.price">₹2.50/unit</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Provider:</span>
+                                            <span data-bind="medicine.provider">City Hospital</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Distance:</span>
+                                            <span data-bind="medicine.distance">2.5 km</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2 mb-4">
+                                        <label class="text-sm text-gray-600">Quantity:</label>
+                                        <input type="number" min="1" data-bind="medicine.selectedQuantity" value="1" class="w-20 px-2 py-1 border border-gray-300 rounded text-sm" data-mock="true">
+                                    </div>
+                                    
+                                    <button data-event="click:addToCart" class="w-full bg-med-green text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                                        <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                                    </button>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shopping Cart -->
+                <div id="shopping-cart" class="hidden bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold">Shopping Cart</h2>
+                    </div>
+                    <div class="p-6">
+                        <!-- Cart Items -->
+                        <div class="space-y-4 mb-6">
+                            <!-- @MAP: cartItems.map(item => ( -->
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg" data-mock="true">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900" data-bind="item.name">Paracetamol 500mg</h4>
+                                    <p class="text-sm text-gray-600" data-bind="item.company">Cipla Ltd</p>
+                                    <p class="text-sm text-gray-600">From: <span data-bind="item.provider">City Hospital</span></p>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center space-x-2">
+                                        <button data-event="click:decreaseQuantity" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">-</button>
+                                        <span data-bind="item.quantity" class="w-8 text-center">2</span>
+                                        <button data-event="click:increaseQuantity" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">+</button>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-semibold" data-bind="item.total">₹5.00</p>
+                                        <p class="text-sm text-gray-600" data-bind="item.pricePerUnit">₹2.50/unit</p>
+                                    </div>
+                                    <button data-event="click:removeFromCart" class="text-red-600 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+
+                        <!-- Cart Total -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-lg font-semibold">Total:</span>
+                                <span class="text-2xl font-bold text-med-green" data-bind="cartTotal">₹15.00</span>
+                            </div>
+                            <button data-event="click:proceedToCheckout" class="w-full bg-med-green text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-medium">
+                                <i class="fas fa-credit-card mr-2"></i>Proceed to Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Orders -->
+                <div id="my-orders" class="hidden bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold">My Orders</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- @MAP: orders.map(order => ( -->
+                                <tr data-mock="true">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-bind="order.id">#MC001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="order.date">Jan 15, 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="order.itemCount">3 items</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="order.total">₹45.00</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800" data-bind="order.status">In Transit</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button data-event="click:trackOrder" class="text-med-blue hover:text-blue-700 mr-3">Track</button>
+                                        <button data-event="click:viewOrder" class="text-med-green hover:text-green-700">View</button>
+                                    </td>
+                                </tr>
+                                <!-- @END_MAP )) -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ReceiverDashboard -->
+
+        <!-- Checkout Page -->
+        <!-- @COMPONENT: CheckoutPage [orderSummary: object, paymentMethods: array] -->
+        <div id="checkout-page" class="hidden">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Order Summary -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+                        <div class="space-y-4">
+                            <!-- @MAP: orderItems.map(item => ( -->
+                            <div class="flex justify-between items-center py-2 border-b" data-mock="true">
+                                <div>
+                                    <p class="font-medium" data-bind="item.name">Paracetamol 500mg</p>
+                                    <p class="text-sm text-gray-600">Qty: <span data-bind="item.quantity">2</span> × ₹<span data-bind="item.price">2.50</span></p>
+                                </div>
+                                <p class="font-semibold" data-bind="item.total">₹5.00</p>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t">
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal:</span>
+                                <span data-bind="subtotal">₹15.00</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Delivery Fee:</span>
+                                <span data-bind="deliveryFee">₹5.00</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg">
+                                <span>Total:</span>
+                                <span data-bind="total">₹20.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
+                        <form data-implementation="Should integrate with payment gateway (Razorpay/Stripe)">
+                            <div class="space-y-4">
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="payment" value="upi" class="mr-3" data-mock="true">
+                                        <div class="flex items-center">
+                                            <i class="fab fa-google-pay text-2xl mr-3 text-blue-600"></i>
+                                            <span>UPI / Google Pay</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="payment" value="card" class="mr-3" data-mock="true">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-credit-card text-2xl mr-3 text-green-600"></i>
+                                            <span>Credit / Debit Card</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="payment" value="netbanking" class="mr-3" data-mock="true">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-university text-2xl mr-3 text-purple-600"></i>
+                                            <span>Net Banking</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" data-event="click:processPayment" class="w-full mt-6 bg-med-green text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-medium">
+                                <i class="fas fa-lock mr-2"></i>Pay ₹<span data-bind="total">20.00</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: CheckoutPage -->
+
+        <!-- Admin Dashboard -->
+        <!-- @COMPONENT: AdminDashboard [pendingRegistrations: array, pendingMedicines: array, systemStats: object] -->
+        <div id="admin-dashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+                    <p class="text-gray-600">Manage registrations, medicine approvals, and system oversight</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 rounded-full p-3">
+                                <i class="fas fa-users text-med-blue text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Users</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.totalUsers">142</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Pending Approvals</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.pendingApprovals">8</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 rounded-full p-3">
+                                <i class="fas fa-pills text-med-green text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Medicines</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.totalMedicines">1,248</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 rounded-full p-3">
+                                <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                                <p class="text-2xl font-bold text-gray-900" data-bind="stats.totalOrders">356</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6">
+                            <button data-event="click:showPendingRegistrations" class="py-4 px-1 border-b-2 border-med-green text-med-green font-medium">
+                                <i class="fas fa-user-check mr-2"></i>Pending Registrations
+                                <span data-bind="pendingRegistrationCount" class="bg-red-500 text-white text-xs rounded-full px-2 py-1 ml-1">5</span>
+                            </button>
+                            <button data-event="click:showPendingMedicines" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-clipboard-check mr-2"></i>Pending Medicines
+                                <span data-bind="pendingMedicineCount" class="bg-red-500 text-white text-xs rounded-full px-2 py-1 ml-1">3</span>
+                            </button>
+                            <button data-event="click:showSystemOverview" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-chart-bar mr-2"></i>System Overview
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Pending Registrations -->
+                    <div id="pending-registrations" class="p-6">
+                        <h2 class="text-xl font-semibold mb-6">Pending User Registrations</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Organization</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Owner</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gov ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <!-- @MAP: pendingRegistrations.map(registration => ( -->
+                                    <tr data-mock="true">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900" data-bind="registration.organizationName">Metro Hospital</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="registration.type">Hospital</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="registration.ownerName">Dr. Rajesh Kumar</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div data-bind="registration.email">rajesh@metrohospital.com</div>
+                                            <div data-bind="registration.mobile">+91 9876543210</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-bind="registration.govId">MH12345678</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800" data-bind="registration.aiStatus">AI Flagged</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button data-event="click:approveRegistration" class="text-green-600 hover:text-green-700 mr-3">
+                                                <i class="fas fa-check mr-1"></i>Approve
+                                            </button>
+                                            <button data-event="click:rejectRegistration" class="text-red-600 hover:text-red-700">
+                                                <i class="fas fa-times mr-1"></i>Reject
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- @END_MAP )) -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Pending Medicines -->
+                    <div id="pending-medicines" class="hidden p-6">
+                        <h2 class="text-xl font-semibold mb-6">Pending Medicine Approvals</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- @MAP: pendingMedicines.map(medicine => ( -->
+                            <div class="bg-gray-50 rounded-lg p-6" data-mock="true">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold" data-bind="medicine.name">Amoxicillin 250mg</h3>
+                                        <p class="text-gray-600" data-bind="medicine.company">Sun Pharma</p>
+                                        <p class="text-sm text-gray-500">Listed by: <span data-bind="medicine.listedBy">City Hospital</span></p>
+                                    </div>
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">AI Review</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Expiry Date:</p>
+                                        <p class="font-medium" data-bind="medicine.expiry">Jun 2024</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Quantity:</p>
+                                        <p class="font-medium" data-bind="medicine.quantity">50 units</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Batch Number:</p>
+                                        <p class="font-medium" data-bind="medicine.batch">AMX2024001</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Price per Unit:</p>
+                                        <p class="font-medium" data-bind="medicine.price">₹8.50</p>
+                                    </div>
+                                </div>
+
+                                <!-- Medicine Image -->
+                                <!-- High-resolution image of medicine package with clear labeling -->
+                                <div class="mb-4">
+                                    <img src="https://pixabay.com/get/g0b72a2a6a1efcda67b8d32ffa564edb397e7e5d2c46265ebf42e0164003e0ddf969e5760ce302b1f9a16dcb80a863531e1229d56f7ba06b66ae91b48248d72f7_1280.jpg" alt="Medicine package" class="w-full h-32 object-cover rounded-lg" data-mock-image="true" data-implementation="Should display actual uploaded medicine image">
+                                </div>
+
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                                    <p class="text-sm text-yellow-800">
+                                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                                        AI flagged: OCR data mismatch detected. Manual review required.
+                                    </p>
+                                </div>
+
+                                <div class="flex space-x-3">
+                                    <button data-event="click:approveMedicine" class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                                        <i class="fas fa-check mr-2"></i>Approve
+                                    </button>
+                                    <button data-event="click:rejectMedicine" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors">
+                                        <i class="fas fa-times mr-2"></i>Reject
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+
+                    <!-- System Overview -->
+                    <div id="system-overview" class="hidden p-6">
+                        <h2 class="text-xl font-semibold mb-6">System Overview & Analytics</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Recent Activity -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                                <div class="space-y-3">
+                                    <!-- @MAP: recentActivity.map(activity => ( -->
+                                    <div class="flex items-center p-3 bg-white rounded-lg" data-mock="true">
+                                        <div class="bg-blue-100 rounded-full p-2 mr-3">
+                                            <i class="fas fa-user text-med-blue text-sm"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-medium" data-bind="activity.action">New user registration</p>
+                                            <p class="text-xs text-gray-500" data-bind="activity.time">2 minutes ago</p>
+                                        </div>
+                                    </div>
+                                    <!-- @END_MAP )) -->
+                                </div>
+                            </div>
+
+                            <!-- System Health -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold mb-4">System Health</h3>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">AI Verification System</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Online</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">Payment Gateway</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Online</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">OCR Service</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Online</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">Database</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Online</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AdminDashboard -->
+
+        <!-- Order Confirmation Page -->
+        <!-- @COMPONENT: OrderConfirmation [orderDetails: object] -->
+        <div id="order-confirmation" class="hidden">
+            <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                    <div class="text-center mb-8">
+                        <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check text-med-green text-2xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
+                        <p class="text-gray-600">Thank you for your order. Your medicines will be delivered soon.</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <h2 class="text-lg font-semibold mb-4">Order Details</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Order ID:</p>
+                                <p class="font-semibold" data-bind="orderDetails.id">#MC002</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Order Date:</p>
+                                <p class="font-semibold" data-bind="orderDetails.date">Jan 20, 2024</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Amount:</p>
+                                <p class="font-semibold text-med-green" data-bind="orderDetails.total">₹20.00</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Payment Status:</p>
+                                <p class="font-semibold text-green-600" data-bind="orderDetails.paymentStatus">Paid</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button data-event="click:trackOrder" class="flex-1 bg-med-blue text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-map-marker-alt mr-2"></i>Track Order
+                        </button>
+                        <button data-event="click:downloadBill" class="flex-1 bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-download mr-2"></i>Download Bill
+                        </button>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <button data-event="click:continueShopping" class="text-med-blue hover:text-blue-700">
+                            Continue Shopping
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: OrderConfirmation -->
+    </div>
+
+    <!-- JavaScript for Page Navigation -->
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        
+        (function() {
+            // Page navigation functions
+            function showPage(pageId) {
+                // Hide all pages
+                const pages = ['landing-page', 'registration-page', 'login-page', 'admin-login-page', 'role-selection-page', 'sender-dashboard', 'receiver-dashboard', 'checkout-page', 'admin-dashboard', 'order-confirmation'];
+                pages.forEach(id => {
+                    document.getElementById(id).classList.add('hidden');
+                });
+                
+                // Show requested page
+                document.getElementById(pageId).classList.remove('hidden');
+            }
+
+            // Initial page setup - show landing page
+            showPage('landing-page');
+
+            // Landing page navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-event="click:showRegistration"]')) {
+                    showPage('registration-page');
+                }
+                if (e.target.closest('[data-event="click:showLogin"]')) {
+                    showPage('login-page');
+                }
+                if (e.target.closest('[data-event="click:showAdminLogin"]')) {
+                    showPage('admin-login-page');
+                }
+                
+                // Role selection
+                if (e.target.closest('[data-event="click:selectSenderRole"]')) {
+                    showPage('sender-dashboard');
+                }
+                if (e.target.closest('[data-event="click:selectReceiverRole"]')) {
+                    showPage('receiver-dashboard');
+                }
+                
+                // After login simulation
+                if (e.target.closest('[data-event="click:handleLogin"]')) {
+                    e.preventDefault();
+                    showPage('role-selection-page');
+                }
+                if (e.target.closest('[data-event="click:handleAdminLogin"]')) {
+                    e.preventDefault();
+                    showPage('admin-dashboard');
+                }
+                if (e.target.closest('[data-event="click:handleRegistration"]')) {
+                    e.preventDefault();
+                    alert('Registration submitted for AI verification');
+                    showPage('login-page');
+                }
+                
+                // Checkout flow
+                if (e.target.closest('[data-event="click:proceedToCheckout"]')) {
+                    showPage('checkout-page');
+                }
+                if (e.target.closest('[data-event="click:processPayment"]')) {
+                    e.preventDefault();
+                    showPage('order-confirmation');
+                }
+            });
+
+            // Tab switching within dashboards
+            document.addEventListener('click', function(e) {
+                // Sender dashboard tabs
+                if (e.target.closest('[data-event="click:showSendMedicine"]')) {
+                    document.getElementById('send-medicine-form').classList.remove('hidden');
+                    document.getElementById('my-sent-medicines').classList.add('hidden');
+                }
+                if (e.target.closest('[data-event="click:showMySentMedicines"]')) {
+                    document.getElementById('send-medicine-form').classList.add('hidden');
+                    document.getElementById('my-sent-medicines').classList.remove('hidden');
+                }
+                
+                // Receiver dashboard tabs
+                if (e.target.closest('[data-event="click:showSearchMedicines"]')) {
+                    document.getElementById('search-medicine-form').classList.remove('hidden');
+                    document.getElementById('shopping-cart').classList.add('hidden');
+                    document.getElementById('my-orders').classList.add('hidden');
+                }
+                if (e.target.closest('[data-event="click:showMyCart"]')) {
+                    document.getElementById('search-medicine-form').classList.add('hidden');
+                    document.getElementById('shopping-cart').classList.remove('hidden');
+                    document.getElementById('my-orders').classList.add('hidden');
+                }
+                if (e.target.closest('[data-event="click:showMyOrders"]')) {
+                    document.getElementById('search-medicine-form').classList.add('hidden');
+                    document.getElementById('shopping-cart').classList.add('hidden');
+                    document.getElementById('my-orders').classList.remove('hidden');
+                }
+                
+                // Admin dashboard tabs
+                if (e.target.closest('[data-event="click:showPendingRegistrations"]')) {
+                    document.getElementById('pending-registrations').classList.remove('hidden');
+                    document.getElementById('pending-medicines').classList.add('hidden');
+                    document.getElementById('system-overview').classList.add('hidden');
+                }
+                if (e.target.closest('[data-event="click:showPendingMedicines"]')) {
+                    document.getElementById('pending-registrations').classList.add('hidden');
+                    document.getElementById('pending-medicines').classList.remove('hidden');
+                    document.getElementById('system-overview').classList.add('hidden');
+                }
+                if (e.target.closest('[data-event="click:showSystemOverview"]')) {
+                    document.getElementById('pending-registrations').classList.add('hidden');
+                    document.getElementById('pending-medicines').classList.add('hidden');
+                    document.getElementById('system-overview').classList.remove('hidden');
+                }
+            });
+
+            // Form submissions and interactions
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-event="click:addToCart"]')) {
+                    alert('Medicine added to cart');
+                }
+                if (e.target.closest('[data-event="click:approveRegistration"]')) {
+                    alert('Registration approved');
+                }
+                if (e.target.closest('[data-event="click:rejectRegistration"]')) {
+                    alert('Registration rejected');
+                }
+                if (e.target.closest('[data-event="click:approveMedicine"]')) {
+                    alert('Medicine approved');
+                }
+                if (e.target.closest('[data-event="click:rejectMedicine"]')) {
+                    alert('Medicine rejected');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

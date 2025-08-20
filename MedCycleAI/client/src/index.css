@@ -1,0 +1,1039 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(213, 78%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* MedCycle Healthcare Colors - Matching Design Reference */
+  --med-blue: hsl(213, 78%, 54%);
+  --med-blue-hover: hsl(213, 78%, 45%);
+  --med-blue-light: hsl(213, 78%, 95%);
+  --med-blue-50: hsl(213, 100%, 97%);
+  --med-blue-100: hsl(213, 95%, 93%);
+  --med-blue-600: hsl(213, 78%, 54%);
+  --med-blue-700: hsl(213, 78%, 45%);
+  
+  --med-teal: hsl(173, 91%, 20%);
+  --med-teal-hover: hsl(173, 91%, 16%);
+  --med-teal-light: hsl(173, 91%, 95%);
+  --med-teal-50: hsl(173, 100%, 97%);
+  --med-teal-100: hsl(173, 95%, 90%);
+  --med-teal-600: hsl(173, 91%, 20%);
+  --med-teal-700: hsl(173, 91%, 16%);
+  
+  --med-green: hsl(142, 71%, 45%);
+  --med-green-hover: hsl(142, 71%, 36%);
+  --med-green-light: hsl(142, 71%, 95%);
+  --med-green-50: hsl(142, 100%, 97%);
+  --med-green-100: hsl(142, 95%, 90%);
+  --med-green-600: hsl(142, 71%, 45%);
+  --med-green-700: hsl(142, 71%, 36%);
+  
+  --med-gray: hsl(60, 9%, 98%);
+  --med-gray-50: hsl(60, 9%, 98%);
+  --med-gray-100: hsl(60, 4.8%, 95.9%);
+  --med-gray-200: hsl(20, 5.9%, 90%);
+  --med-gray-300: hsl(24, 5.7%, 82.9%);
+  --med-gray-400: hsl(24, 5.4%, 63.9%);
+  --med-gray-500: hsl(25, 5.3%, 44.7%);
+  --med-gray-600: hsl(24, 9.8%, 20%);
+  --med-gray-700: hsl(20, 14.3%, 15%);
+  --med-gray-800: hsl(20, 14.3%, 10%);
+  --med-gray-900: hsl(20, 14.3%, 4.1%);
+  
+  /* Status Colors for Healthcare Context */
+  --status-approved: hsl(142, 71%, 45%);
+  --status-approved-bg: hsl(142, 100%, 97%);
+  --status-pending: hsl(45, 93%, 47%);
+  --status-pending-bg: hsl(48, 100%, 96%);
+  --status-rejected: hsl(0, 84%, 60%);
+  --status-rejected-bg: hsl(0, 100%, 97%);
+  --status-available: hsl(142, 71%, 45%);
+  --status-available-bg: hsl(142, 100%, 97%);
+  
+  /* Healthcare Organization Type Colors */
+  --org-hospital: hsl(213, 78%, 54%);
+  --org-pharmacy: hsl(142, 71%, 45%);
+  --org-medical-shop: hsl(271, 81%, 56%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(213, 78%, 60%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+  
+  /* MedCycle Healthcare Colors for Dark Mode */
+  --med-blue: hsl(213, 78%, 60%);
+  --med-blue-hover: hsl(213, 78%, 70%);
+  --med-blue-light: hsl(213, 78%, 15%);
+  --med-teal: hsl(173, 91%, 35%);
+  --med-teal-hover: hsl(173, 91%, 45%);
+  --med-teal-light: hsl(173, 91%, 15%);
+  --med-green: hsl(142, 71%, 50%);
+  --med-green-hover: hsl(142, 71%, 60%);
+  --med-green-light: hsl(142, 71%, 15%);
+  --med-gray: hsl(240, 10%, 3.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+}
+
+@layer utilities {
+  /* MedCycle Healthcare Brand Colors */
+  .text-med-blue {
+    color: var(--med-blue);
+  }
+  
+  .bg-med-blue {
+    background-color: var(--med-blue);
+  }
+  
+  .border-med-blue {
+    border-color: var(--med-blue);
+  }
+  
+  .hover\:bg-med-blue:hover {
+    background-color: var(--med-blue-hover);
+  }
+  
+  .text-med-teal {
+    color: var(--med-teal);
+  }
+  
+  .bg-med-teal {
+    background-color: var(--med-teal);
+  }
+  
+  .border-med-teal {
+    border-color: var(--med-teal);
+  }
+  
+  .hover\:bg-med-teal:hover {
+    background-color: var(--med-teal-hover);
+  }
+  
+  .text-med-green {
+    color: var(--med-green);
+  }
+  
+  .bg-med-green {
+    background-color: var(--med-green);
+  }
+  
+  .border-med-green {
+    border-color: var(--med-green);
+  }
+  
+  .hover\:bg-med-green:hover {
+    background-color: var(--med-green-hover);
+  }
+  
+  .bg-med-gray {
+    background-color: var(--med-gray);
+  }
+  
+  /* Light Background Variants */
+  .bg-med-blue-light {
+    background-color: var(--med-blue-light);
+  }
+  
+  .bg-med-teal-light {
+    background-color: var(--med-teal-light);
+  }
+  
+  .bg-med-green-light {
+    background-color: var(--med-green-light);
+  }
+  
+  /* Specific Color Shades for Tailwind-like Usage */
+  .bg-blue-50 {
+    background-color: var(--med-blue-50);
+  }
+  
+  .bg-blue-100 {
+    background-color: var(--med-blue-100);
+  }
+  
+  .bg-blue-600 {
+    background-color: var(--med-blue-600);
+  }
+  
+  .bg-blue-700 {
+    background-color: var(--med-blue-700);
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: var(--med-blue-700);
+  }
+  
+  .text-blue-600 {
+    color: var(--med-blue-600);
+  }
+  
+  .text-blue-700 {
+    color: var(--med-blue-700);
+  }
+  
+  .hover\:text-blue-700:hover {
+    color: var(--med-blue-700);
+  }
+  
+  .bg-green-50 {
+    background-color: var(--med-green-50);
+  }
+  
+  .bg-green-100 {
+    background-color: var(--med-green-100);
+  }
+  
+  .bg-green-600 {
+    background-color: var(--med-green-600);
+  }
+  
+  .bg-green-700 {
+    background-color: var(--med-green-700);
+  }
+  
+  .hover\:bg-green-700:hover {
+    background-color: var(--med-green-700);
+  }
+  
+  .text-green-600 {
+    color: var(--med-green-600);
+  }
+  
+  .text-green-700 {
+    color: var(--med-green-700);
+  }
+  
+  .hover\:text-green-700:hover {
+    color: var(--med-green-700);
+  }
+  
+  .bg-teal-600 {
+    background-color: var(--med-teal-600);
+  }
+  
+  .bg-teal-700 {
+    background-color: var(--med-teal-700);
+  }
+  
+  .hover\:bg-teal-700:hover {
+    background-color: var(--med-teal-700);
+  }
+  
+  .text-teal-600 {
+    color: var(--med-teal-600);
+  }
+  
+  /* Healthcare-specific Gradient Backgrounds Matching Design Reference */
+  .healthcare-gradient {
+    background: linear-gradient(135deg, var(--med-blue) 0%, var(--med-teal) 100%);
+  }
+  
+  .healthcare-gradient-reverse {
+    background: linear-gradient(135deg, var(--med-teal) 0%, var(--med-blue) 100%);
+  }
+  
+  .healthcare-gradient-green {
+    background: linear-gradient(135deg, var(--med-green) 0%, var(--med-teal) 100%);
+  }
+  
+  /* Professional Healthcare Card Styling */
+  .healthcare-card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  
+  .healthcare-card-elevated {
+    @apply bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  /* Healthcare Button Variants Matching Design Reference */
+  .healthcare-button-primary {
+    @apply bg-med-blue hover:bg-med-blue text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+    background-color: var(--med-blue);
+  }
+  
+  .healthcare-button-primary:hover {
+    background-color: var(--med-blue-hover);
+  }
+  
+  .healthcare-button-secondary {
+    @apply bg-med-green hover:bg-med-green text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+    background-color: var(--med-green);
+  }
+  
+  .healthcare-button-secondary:hover {
+    background-color: var(--med-green-hover);
+  }
+  
+  .healthcare-button-tertiary {
+    @apply bg-med-teal hover:bg-med-teal text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+    background-color: var(--med-teal);
+  }
+  
+  .healthcare-button-tertiary:hover {
+    background-color: var(--med-teal-hover);
+  }
+  
+  .healthcare-button-outline {
+    @apply border-2 border-white text-white font-medium px-6 py-3 rounded-lg hover:bg-white hover:text-med-blue transition-colors duration-200;
+  }
+  
+  .healthcare-button-outline:hover {
+    color: var(--med-blue);
+  }
+  
+  /* Status Badges with Proper Healthcare Colors */
+  .healthcare-badge-approved {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-approved-bg);
+    color: var(--status-approved);
+  }
+  
+  .healthcare-badge-pending {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending);
+  }
+  
+  .healthcare-badge-rejected {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected);
+  }
+  
+  .healthcare-badge-available {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-available-bg);
+    color: var(--status-available);
+  }
+  
+  /* Form Inputs with Healthcare Styling */
+  .healthcare-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 transition-colors duration-200;
+    border-color: var(--med-gray-300);
+  }
+  
+  .healthcare-input:focus {
+    --tw-ring-color: var(--med-blue);
+    border-color: transparent;
+  }
+  
+  .healthcare-input-error {
+    @apply w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent;
+  }
+  
+  /* Medicine Card Specific Styling Matching Design Reference */
+  .medicine-card {
+    @apply bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-200;
+    border-color: var(--med-gray-200);
+  }
+  
+  .medicine-card:hover {
+    border-color: var(--med-blue);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .medicine-card-header {
+    @apply flex justify-between items-start mb-4;
+  }
+  
+  .medicine-card-title {
+    @apply font-semibold text-gray-900 text-lg;
+  }
+  
+  .medicine-card-subtitle {
+    @apply text-sm text-gray-600 mt-1;
+  }
+  
+  .medicine-card-meta {
+    @apply space-y-2 mb-4 text-sm;
+  }
+  
+  .medicine-card-meta-row {
+    @apply flex justify-between items-center;
+  }
+  
+  .medicine-card-meta-label {
+    @apply text-gray-600;
+  }
+  
+  .medicine-card-meta-value {
+    @apply font-medium text-gray-900;
+  }
+  
+  .medicine-card-price {
+    @apply font-semibold;
+    color: var(--med-green);
+  }
+  
+  /* Dashboard Stats Card Styling */
+  .stats-card {
+    @apply bg-white rounded-lg shadow-sm p-6 border;
+    border-color: var(--med-gray-200);
+  }
+  
+  .stats-card-content {
+    @apply flex items-center;
+  }
+  
+  .stats-card-icon {
+    @apply rounded-full p-3 mr-4;
+  }
+  
+  .stats-card-icon-blue {
+    background-color: var(--med-blue-light);
+  }
+  
+  .stats-card-icon-green {
+    background-color: var(--med-green-light);
+  }
+  
+  .stats-card-icon-yellow {
+    @apply bg-yellow-100;
+  }
+  
+  .stats-card-icon-purple {
+    @apply bg-purple-100;
+  }
+  
+  .stats-card-text {
+    @apply flex-1;
+  }
+  
+  .stats-card-label {
+    @apply text-sm font-medium text-gray-600 mb-1;
+  }
+  
+  .stats-card-value {
+    @apply text-2xl font-bold text-gray-900;
+  }
+  
+  /* Navigation and Header Styling */
+  .healthcare-nav {
+    @apply bg-white shadow-sm border-b;
+    border-color: var(--med-gray-200);
+  }
+  
+  .healthcare-nav-content {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .healthcare-nav-inner {
+    @apply flex justify-between items-center h-16;
+  }
+  
+  .healthcare-logo {
+    @apply flex-shrink-0 flex items-center;
+  }
+  
+  .healthcare-logo-icon {
+    color: var(--med-blue);
+    @apply mr-3;
+  }
+  
+  .healthcare-logo-text {
+    @apply text-xl font-bold text-gray-900;
+  }
+  
+  /* Hero Section Styling Matching Design Reference */
+  .healthcare-hero {
+    @apply relative py-20;
+    background: linear-gradient(135deg, var(--med-blue) 0%, var(--med-teal) 100%);
+  }
+  
+  .healthcare-hero-content {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center;
+  }
+  
+  .healthcare-hero-title {
+    @apply text-4xl md:text-6xl font-bold text-white mb-6;
+  }
+  
+  .healthcare-hero-subtitle {
+    @apply text-xl md:text-2xl mb-8 max-w-3xl mx-auto;
+    color: hsl(213, 100%, 85%);
+  }
+  
+  .healthcare-hero-buttons {
+    @apply flex flex-col sm:flex-row gap-4 justify-center;
+  }
+  
+  /* Professional Animations and Transitions */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Custom Scrollbar for Healthcare Aesthetics */
+  .healthcare-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--med-blue) transparent;
+  }
+  
+  .healthcare-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .healthcare-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .healthcare-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--med-blue);
+    border-radius: 3px;
+  }
+  
+  .healthcare-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--med-blue-hover);
+  }
+  
+  /* Loading Spinner with Healthcare Colors */
+  .healthcare-spinner {
+    @apply w-8 h-8 border-4 border-gray-200 rounded-full animate-spin;
+    border-top-color: var(--med-blue);
+  }
+  
+  .healthcare-spinner-small {
+    @apply w-4 h-4 border-2 border-gray-200 rounded-full animate-spin;
+    border-top-color: var(--med-blue);
+  }
+  
+  /* Focus States for Accessibility */
+  .healthcare-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    --tw-ring-color: var(--med-blue);
+  }
+  
+  .healthcare-focus-green {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    --tw-ring-color: var(--med-green);
+  }
+  
+  /* Organization Type Colors */
+  .organization-type-hospital {
+    color: var(--org-hospital);
+  }
+  
+  .organization-type-pharmacy {
+    color: var(--org-pharmacy);
+  }
+  
+  .organization-type-medical-shop {
+    color: var(--org-medical-shop);
+  }
+  
+  /* Medicine Expiry Status Colors */
+  .medicine-expiry-soon {
+    @apply text-yellow-600 font-medium;
+  }
+  
+  .medicine-expiry-critical {
+    @apply text-red-600 font-bold;
+  }
+  
+  .medicine-expiry-safe {
+    @apply text-green-600 font-medium;
+  }
+  
+  /* Loading States for Healthcare Context */
+  .loading-skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+  
+  .loading-skeleton-text {
+    @apply h-4 bg-gray-200 rounded animate-pulse;
+  }
+  
+  .loading-skeleton-circle {
+    @apply w-10 h-10 bg-gray-200 rounded-full animate-pulse;
+  }
+  
+  .loading-skeleton-button {
+    @apply h-10 bg-gray-200 rounded-lg animate-pulse;
+  }
+  
+  /* Professional Healthcare Error States */
+  .error-state {
+    @apply text-center py-8 text-gray-500;
+  }
+  
+  .error-state-icon {
+    @apply w-12 h-12 text-gray-400 mx-auto mb-4;
+  }
+  
+  .error-state-title {
+    @apply text-lg font-medium text-gray-900 mb-2;
+  }
+  
+  .error-state-description {
+    @apply text-gray-600;
+  }
+  
+  /* Empty States for Healthcare Data */
+  .empty-state {
+    @apply text-center py-12 text-gray-500;
+  }
+  
+  .empty-state-icon {
+    @apply w-16 h-16 text-gray-300 mx-auto mb-4;
+  }
+  
+  .empty-state-title {
+    @apply text-xl font-medium text-gray-900 mb-2;
+  }
+  
+  .empty-state-description {
+    @apply text-gray-600 mb-6;
+  }
+  
+  .empty-state-action {
+    @apply inline-flex items-center px-4 py-2 rounded-lg transition-colors;
+    background-color: var(--med-blue);
+    color: white;
+  }
+  
+  .empty-state-action:hover {
+    background-color: var(--med-blue-hover);
+  }
+  
+  /* Status Indicators Matching Design Reference */
+  .status-online {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-approved-bg);
+    color: var(--status-approved);
+  }
+  
+  .status-offline {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected);
+  }
+  
+  .status-warning {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending);
+  }
+  
+  /* Tab Styling for Dashboards */
+  .healthcare-tabs {
+    @apply bg-white rounded-lg shadow-sm border;
+    border-color: var(--med-gray-200);
+  }
+  
+  .healthcare-tabs-header {
+    @apply border-b;
+    border-color: var(--med-gray-200);
+  }
+  
+  .healthcare-tabs-nav {
+    @apply flex space-x-8 px-6;
+  }
+  
+  .healthcare-tabs-trigger {
+    @apply py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium transition-colors duration-200;
+  }
+  
+  .healthcare-tabs-trigger-active {
+    @apply py-4 px-1 border-b-2 font-medium;
+    border-color: var(--med-blue);
+    color: var(--med-blue);
+  }
+  
+  .healthcare-tabs-content {
+    @apply p-6;
+  }
+  
+  /* Form Styling for Healthcare Context */
+  .healthcare-form-container {
+    @apply max-w-md mx-auto bg-white rounded-lg shadow-lg;
+  }
+  
+  .healthcare-form-header {
+    @apply px-6 py-8 text-center;
+  }
+  
+  .healthcare-form-icon {
+    @apply mx-auto mb-4;
+  }
+  
+  .healthcare-form-title {
+    @apply text-2xl font-bold text-gray-900 mb-2;
+  }
+  
+  .healthcare-form-subtitle {
+    @apply text-gray-600;
+  }
+  
+  .healthcare-form-content {
+    @apply px-6 pb-8;
+  }
+  
+  /* Feature Section Styling */
+  .healthcare-features {
+    @apply py-16 bg-white;
+  }
+  
+  .healthcare-features-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .healthcare-features-header {
+    @apply text-center mb-12;
+  }
+  
+  .healthcare-features-title {
+    @apply text-3xl font-bold text-gray-900 mb-4;
+  }
+  
+  .healthcare-features-subtitle {
+    @apply text-lg text-gray-600;
+  }
+  
+  .healthcare-features-grid {
+    @apply grid md:grid-cols-3 gap-8;
+  }
+  
+  .healthcare-feature-item {
+    @apply text-center p-6;
+  }
+  
+  .healthcare-feature-icon {
+    @apply rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4;
+  }
+  
+  .healthcare-feature-icon-blue {
+    background-color: var(--med-blue-light);
+  }
+  
+  .healthcare-feature-icon-teal {
+    background-color: var(--med-teal-light);
+  }
+  
+  .healthcare-feature-icon-green {
+    background-color: var(--med-green-light);
+  }
+  
+  .healthcare-feature-title {
+    @apply text-xl font-semibold mb-2;
+  }
+  
+  .healthcare-feature-description {
+    @apply text-gray-600;
+  }
+  
+  /* Role Selection Styling */
+  .role-selection-container {
+    @apply min-h-screen py-12 px-4 sm:px-6 lg:px-8;
+    background-color: var(--med-gray);
+  }
+  
+  .role-selection-content {
+    @apply max-w-4xl mx-auto;
+  }
+  
+  .role-selection-header {
+    @apply text-center mb-12;
+  }
+  
+  .role-selection-title {
+    @apply text-3xl font-bold text-gray-900 mb-4;
+  }
+  
+  .role-selection-subtitle {
+    @apply text-lg text-gray-600;
+  }
+  
+  .role-selection-grid {
+    @apply grid md:grid-cols-2 gap-8;
+  }
+  
+  .role-selection-card {
+    @apply bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow cursor-pointer;
+  }
+  
+  .role-selection-card-content {
+    @apply text-center;
+  }
+  
+  .role-selection-card-icon {
+    @apply rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6;
+  }
+  
+  .role-selection-card-title {
+    @apply text-2xl font-bold text-gray-900 mb-4;
+  }
+  
+  .role-selection-card-description {
+    @apply text-gray-600 mb-6;
+  }
+}
+
+/* Print Styles for Bills and Reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  .healthcare-card, .medicine-card, .stats-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  .healthcare-gradient, .healthcare-hero {
+    background: #f8f9fa !important;
+    color: #000 !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --med-blue: hsl(213, 100%, 40%);
+    --med-teal: hsl(173, 100%, 25%);
+    --med-green: hsl(142, 100%, 35%);
+  }
+  
+  .healthcare-button-primary,
+  .healthcare-button-secondary,
+  .healthcare-button-tertiary {
+    @apply border-2 border-current;
+  }
+  
+  .medicine-card,
+  .healthcare-card {
+    @apply border-2 border-gray-400;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .slide-up,
+  .scale-in {
+    animation: none;
+  }
+  
+  .healthcare-card,
+  .medicine-card,
+  .healthcare-button-primary,
+  .healthcare-button-secondary,
+  .healthcare-button-tertiary {
+    transition: none;
+  }
+  
+  .healthcare-spinner,
+  .healthcare-spinner-small {
+    animation: none;
+    border-top-color: var(--med-blue);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .healthcare-hero-title {
+    @apply text-3xl;
+  }
+  
+  .healthcare-hero-subtitle {
+    @apply text-lg;
+  }
+  
+  .healthcare-hero-buttons {
+    @apply flex-col;
+  }
+  
+  .healthcare-form-container {
+    @apply mx-4;
+  }
+  
+  .stats-card {
+    @apply p-4;
+  }
+  
+  .stats-card-value {
+    @apply text-xl;
+  }
+  
+  .medicine-card {
+    @apply p-4;
+  }
+  
+  .healthcare-tabs-nav {
+    @apply space-x-4 px-4;
+  }
+  
+  .healthcare-tabs-content {
+    @apply p-4;
+  }
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .healthcare-features-grid {
+    @apply grid-cols-2;
+  }
+  
+  .role-selection-grid {
+    @apply grid-cols-1;
+  }
+  
+  .role-selection-card {
+    @apply max-w-md mx-auto;
+  }
+}
+
+/* Large Screen Optimizations */
+@media (min-width: 1400px) {
+  .healthcare-hero-content,
+  .healthcare-features-container,
+  .role-selection-content {
+    @apply max-w-7xl;
+  }
+  
+  .healthcare-nav-content {
+    @apply max-w-7xl;
+  }
+}
+
+/* Dark Mode Enhancements for Healthcare */
+.dark .healthcare-card,
+.dark .medicine-card,
+.dark .stats-card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .healthcare-nav {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .healthcare-logo-text {
+  @apply text-white;
+}
+
+.dark .healthcare-form-container {
+  @apply bg-gray-800;
+}
+
+.dark .healthcare-form-title {
+  @apply text-white;
+}
+
+.dark .healthcare-form-subtitle {
+  @apply text-gray-300;
+}
+
+.dark .healthcare-features {
+  @apply bg-gray-900;
+}
+
+.dark .healthcare-features-title {
+  @apply text-white;
+}
+
+.dark .healthcare-features-subtitle {
+  @apply text-gray-300;
+}
+
+.dark .healthcare-feature-title {
+  @apply text-white;
+}
+
+.dark .healthcare-feature-description {
+  @apply text-gray-300;
+}

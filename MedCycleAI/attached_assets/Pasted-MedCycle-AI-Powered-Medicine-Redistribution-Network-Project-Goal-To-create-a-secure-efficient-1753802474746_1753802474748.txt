@@ -1,0 +1,325 @@
+MedCycle: AI-Powered Medicine Redistribution Network 💊
+Project Goal: To create a secure, efficient, and transparent online platform for the redistribution of sealed, safe, near-expiry medicines at a cost between verified healthcare entities (Hospitals, Pharmacies, Medical Shops) in India, thereby reducing pharmaceutical waste and improving medicine accessibility in rural regions and supplying medicines at emergency situations
+
+A. Detailed Step-by-Step Project Flow (The User Journey & System Actions)
+MedCycle is designed to guide users through a seamless process, leveraging AI for critical verification steps to ensure trust and efficiency.
+
+Step 1: Initial Access & Authentication (The Grand Entry)
+User Action: A new or returning user opens the MedCycle website in their browser.
+
+System Display: The user is presented with the Landing Page (/), offering three distinct entry points:
+
+"Sign Up": For new healthcare entities to register.
+
+"Login": For existing, verified healthcare entity users.
+
+"Admin Login": A dedicated portal for administrators.
+In admin login is for manual approval for registrations , and medicine approval
+even though there is ai verified registerations and medicine approval , also give power to admin approval
+Purpose: To clearly segment user types from the very beginning, ensuring appropriate access.
+
+Step 2: User Registration & AI-Powered Verification (Building Trust & Automating KYC)
+User Action: The user clicks "Sign Up" and is directed to the Registration Page (/register).
+
+User Input:
+
+They select their User Type (Hospital, Pharmacy, Medical Shop).
+
+They fill in organizational details (Organization Name, Owner Name, Email, Mobile, Organization PIN Code), set a password, and provide their Government ID Number (e.g., Drug License, Hospital Registration Number) and Aadhaar Number (of the authorized person).
+
+Cross check the registered details with real time hospital id  lists using ai  or say there is any api 
+System Action (Backend - AI-Powered Verification):
+
+
+Data Comparison & Validation: data is compared with user input; format validations are performed.
+
+Automated Approval/Rejection: Based on confidence of data matches and validations:
+
+Auto-Approved: Account instantly is_verified=True, role="sender_receiver". User can then proceed to login.
+
+Auto-Rejected: Account is_verified=False, role="rejected". User is informed of specific rejection reasons.
+
+
+Purpose: To establish a verified network by automatically validating entity legitimacy, streamlining onboarding.
+
+Step 3: User Login (Accessing the Platform)
+User Action:
+
+General User: Clicks "Login" from the Landing Page and is directed to the Login Page (/login). They enter their email/username and password.
+
+Admin User: Clicks "Admin Login" from the Landing Page and is directed to the Admin Login Page (/admin/login - new page).
+
+Default Admin Credentials: For initial setup and ease of access, the default admin username is admin and password is admin. 
+Admin has the power to approve registations and approval of medicines
+They enter their admin username and password.
+
+System Action (Backend - Authentication):
+
+The system authenticates credentials and verifies is_verified status and role.
+
+A session is established.
+
+System Display:
+ After login system displays 2 options sender and receiver 
+
+For admin role: Redirects to Admin Dashboard (/admin/dashboard).
+
+Purpose: To securely authenticate users and direct them to their appropriate starting point based on their role.
+
+Step 3.5: Role Selection for sender_receiver (Guided Experience - NEW STEP)
+User Action: After a successful login as a sender_receiver (Hospital, Pharmacy, Medical Shop), the user is directed to the Role Selection Page (/role-selection).
+
+System Display: This page presents a clear choice:
+
+"I want to Send Medicines" button.
+
+"I want to Receive Medicines" button.
+
+User Action: The user selects their immediate intent by clicking one of the buttons.
+
+System Action:
+
+If "Send Medicines" is chosen: Redirects to Sender Dashboard (Context: "Send") which will display "Send Medicine" and "My Sent Medicines".
+
+If "Receive Medicines" is chosen: Redirects to Receiver Dashboard (Context: "Receive") which will display "Search Medicines", "My Cart", and "My Orders".
+
+Purpose: To provide a more focused and guided user experience for dual-role users, avoiding an overwhelming display of all options at once.
+
+Step 4: Medicine Sending Flow (The Supply Chain - Sender Side)
+User Action: User clicks "I want to Send Medicines" on the Role Selection Page (or directly navigates to /send-medicine).
+
+System Display (Sender Dashboard Context): The dashboard now specifically shows: "Send Medicine" and "My Sent Medicines".
+
+User Action (Send Medicine Form): Clicks "Send Medicine" to access the Send Medicine Form (/send-medicine). Inputs details (Name, Company, Expiry, Batch, Seal, Quantity, Cost per Unit) and uploads medicine package photo.
+
+System Action (Backend - AI-Powered Medicine Verification):
+
+Image Handling: Image saved.
+
+OCR Extraction: EasyOCR extracts text (Name, Expiry, Batch).
+
+Data Consistency & Validation: Compares OCR data with user input, validates expiry date (sufficiently far in future).
+
+Automated Approval/Rejection:
+Admin also have the power to approve and rejects
+Auto-Approved: Listing is_approved=True, added to inventory.
+
+Auto-Rejected: Listing is_approved=False. User informed of AI-flagged reasons.
+
+(Note: DEBUG_MODE_MEDICINE = True bypasses strict AI checks.)
+
+Purpose: To accurately capture and verify medicine details, ensuring only genuine, usable items are listed.
+
+Step 5: Medicine Search & Request Flow (The Demand Chain - Receiver Side)
+User Action: User clicks "I want to Receive Medicines" on the Role Selection Page (or directly navigates to /search).
+
+System Display (Receiver Dashboard Context): The dashboard now specifically shows: "Search Medicines", "My Cart", and "My Orders".
+
+User Action (Search Medicine Form): Clicks "Search Medicines" to access the Search Medicine Page (/search). Enters criteria (Medicine Name, PIN Code) and uses filters (Expiry Range, Dosage, Min Quantity, Max Cost). Clicks "Search".
+
+System Action (Backend - Smart Matching & Filtering):
+
+Database Query: Filters is_approved=True medicines matching criteria.
+
+Geolocation Matching: Uses geopy.distance to calculate and sort results by proximity.
+
+Expiry Date Logic: Ensures medicines are well before expiry.
+
+System Display: The Search Medicine Page displays sorted results (Name, Company, Expiry, Quantity, Cost per Unit, Sender Org, Distance). Each has an "Add to Cart" button.
+
+User Action (Add to Cart): Clicks "Add to Cart" for desired medicines, specifying quantity.
+
+Purpose: To efficiently connect receivers with available medicines based on their needs, location, and budget.
+
+Step 6: Cart, Checkout & Payment (The Transaction Core)
+User Action: Navigates to Cart Page (/cart). Reviews items, adjusts quantities, and clicks "Proceed to Checkout".
+
+System Display: Checkout Page (/checkout) shows order summary.
+
+User Action: Confirms order and triggers payment.
+
+System Action (Backend - Order & Payment Processing):
+
+Payment Gateway Call: Initiates a secure transaction with a payment gateway (e.g., Razorpay, Stripe).
+Connects with gpay or upi
+Payment Status Decision:
+
+Successful: Decrements quantities in DB, creates Order record, generates Invoice/Bill, sends notifications. Redirects to Order Confirmation Page.
+
+Failed: Redirects back to Checkout Page with error.
+
+Purpose: To securely facilitate the financial transaction for medicine redistribution.
+
+Step 7: Order Confirmation & Tracking (Post-Transaction Visibility)
+System Display: Order Confirmation Page (/order-confirmation/{order_id}) confirms the order, shows Order ID, and provides conceptual links to Bill and Tracking.
+
+Order Tracking (Conceptual): Link to Order Tracking Page (/receiver/orders/{order_id}) would show live delivery status via logistics API integration.
+
+Purpose: To provide transparent post-purchase information and tracking.
+
+Step 8: Admin Oversight (Managing Exceptions & Analytics)
+User Action: An admin user logs in via the Admin Login Page (/admin/login).
+
+System Display: Redirects to Admin Dashboard (/admin/dashboard).
+
+Admin Functions:
+
+Manage Sent Medicines (/admin/sent-medicines/verify): Admin reviews and manually approves/rejects medicine listings automatically rejected by AI.
+
+Manage User Registrations (/admin/registrations/verify - NEW, for AI-flagged cases): Admin reviews and manually approves/rejects user registrations automatically rejected by AI. (Even if AI automates, admin retains this power for oversight).
+
+Database Viewing Options: Admin can access the Django Admin Panel (/admin/) to view and manage all database records (users, medicines, orders).
+
+View Analytics (Conceptual): Access dashboards for platform KPIs.
+
+Purpose: To provide essential human oversight for AI-flagged exceptions, ensure platform integrity, and monitor overall system performance.
+
+________________________________________
+MedCycle Project: Complete Folder and File Structure
+medcycle_fullstack/
+├── .gitignore                   # Root-level Git ignore file
+├── README.md                    # Project README documentation
+
+├── backend/                     # Django Backend Root Directory
+│   ├── manage.py                # Django's command-line utility
+│   ├── db.sqlite3               # SQLite database file (generated after migrate)
+│   ├── requirements.txt         # Python dependencies for the backend
+│   ├── venv/                    # Python Virtual Environment folder (created after `python -m venv venv`)
+│   │   ├── Scripts/             # (Windows specific) Contains activate.bat, Activate.ps1
+│   │   ├── bin/                 # (macOS/Linux specific) Contains activate script
+│   │   └── Lib/                 # (Windows) or lib/ (macOS/Linux) - Python libraries
+│
+│   ├── medcycle_core/           # Django Project Core (Main settings, URLs)
+│   │   ├── __init__.py          # Marks medcycle_core as a Python package
+│   │   ├── settings.py          # Main Django project settings
+│   │   ├── urls.py              # Main URL routing for the entire Django project
+│   │   ├── wsgi.py              # WSGI configuration for production deployment
+│   │   └── asgi.py              # ASGI configuration for async features/production
+│
+│   ├── accounts/                # Django App: User management, authentication, KYC
+│   │   ├── __init__.py
+│   │   ├── admin.py             # Django Admin registration for models
+│   │   ├── apps.py              # Django app configuration
+│   │   ├── models.py            # User model definition
+│   │   ├── serializers.py       # DRF serializers for User models
+│   │   ├── views.py             # API views for user registration, login, profile
+│   │   └── urls.py              # URL routing for accounts app APIs
+│   │   ├── migrations/          # Database migration files (generated by makemigrations)
+│   │   │   └── 0001_initial.py  # Example migration file
+│   │   └── tests.py             # (Optional) Unit tests for accounts app
+│
+│   ├── medicines/               # Django App: Medicine listings, search, AI approval
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py            # Medicine model definition
+│   │   ├── serializers.py       # DRF serializers for Medicine model
+│   │   ├── views.py             # API views for medicine listing, search
+│   │   ├── urls.py              # URL routing for medicines app APIs
+│   │   ├── filters.py           # (Conceptual) Custom filters for medicine search
+│   │   ├── migrations/          # Database migration files
+│   │   │   └── 0001_initial.py
+│   │   └── tests.py
+│
+│   ├── orders/                  # Django App: Cart, orders, payment processing
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py            # Cart, CartItem, Order, OrderItem models (Conceptual)
+│   │   ├── serializers.py       # DRF serializers for order-related models (Conceptual)
+│   │   ├── views.py             # API views for cart management, checkout, placing orders (Conceptual)
+│   │   ├── urls.py              # URL routing for orders app APIs (Conceptual)
+│   │   ├── payment_gateway.py   # (Conceptual) Razorpay/Stripe integration logic
+│   │   ├── migrations/
+│   │   │   └── 0001_initial.py
+│   │   └── tests.py
+│
+│   ├── admin_panel/             # Django App: Admin-specific controls, manual verification
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── views.py             # API views for admin-only functions (manual review, analytics) (Conceptual)
+│   │   ├── urls.py              # URL routing for admin panel APIs (Conceptual)
+│   │   ├── analytics.py         # (Conceptual) Logic for dashboard KPIs
+│   │   ├── manual_verification.py # (Conceptual) Specific manual review helpers
+│   │   ├── migrations/
+│   │   │   └── (empty)          # Might not have models, so no initial migration
+│   │   └── tests.py
+│
+│   ├── media/                   # Stores uploaded files (e.g., Gov IDs, Aadhaar, Medicine images)
+│   │   ├── gov_ids/             # Uploaded Government ID images
+│   │   ├── aadhar_ids/          # Uploaded Aadhaar images
+│   │   └── medicine_images/     # Uploaded Medicine images
+│
+│   ├── utils/                   # Django App: Common utility functions used across multiple apps
+│   │   ├── __init__.py
+│   │   ├── apps.py
+│   │   ├── utils.py             # Contains general OCR, AI verification (reg & med), string matching, geo utils
+│   │   ├── geo_utils.py         # (Optional: can merge into utils.py) Geolocation specific utils
+│   │   ├── string_match.py      # (Optional: can merge into utils.py) String matching specific utils
+│   │   ├── migrations/
+│   │   │   └── (empty)          # No models, so no initial migration
+│   │   └── tests.py
+│
+├── frontend/                    # React Frontend Root Directory
+│   ├── public/                  # Static assets served directly by Vite
+│   │   ├── index.html           # Main HTML file, entry point for the browser
+│   │   └── vite.svg             # Default Vite icon (often generated)
+│   │   └── favicon.ico          # (Optional) Site favicon
+│   │
+│   ├── src/                     # React App Source Code
+│   │   ├── App.jsx              # Main React App component, handles routing
+│   │   ├── main.jsx             # React entry point (renders App.jsx into index.html's #root)
+│   │
+│   │   ├── routes/              # Routing helper components
+│   │   │   ├── PrivateRoute.jsx # Protects routes for authenticated users
+│   │   │   └── AdminRoute.jsx   # Protects routes for admin users
+│   │
+│   │   ├── pages/               # Top-level page components
+│   │   │   ├── Landing.jsx          # / (landing page)
+│   │   │   ├── Register.jsx         # /register
+│   │   │   ├── Login.jsx            # /login
+│   │   │   ├── AdminLogin.jsx       # /admin/login
+│   │   │   ├── RoleSelection.jsx    # /role-selection (sender/receiver choice)
+│   │   │   ├── SenderDashboard.jsx  # /sender/dashboard
+│   │   │   ├── SendMedicine.jsx     # /send-medicine
+│   │   │   ├── SentMedicineList.jsx # /sender/history (conceptual)
+│   │   │   ├── ReceiverDashboard.jsx # /receiver/dashboard
+│   │   │   ├── SearchMedicine.jsx   # /search
+│   │   │   ├── Cart.jsx             # /cart
+│   │   │   ├── Checkout.jsx         # /checkout
+│   │   │   ├── OrderConfirmation.jsx # /order-confirmation/:id
+│   │   │   ├── OrderTracking.jsx    # /receiver/orders/:id (conceptual)
+│   │   │   ├── AdminDashboard.jsx   # /admin/dashboard
+│   │   │   ├── ManualUserReview.jsx # /admin/registrations/verify (conceptual)
+│   │   │   ├── ManualMedicineReview.jsx # /admin/sent-medicines/verify (conceptual)
+│   │   │   └── AdminAnalytics.jsx   # /admin/analytics (conceptual)
+│   │
+│   │   ├── components/          # Reusable UI components
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx        # (Optional, if using a fixed sidebar layout)
+│   │   │   ├── MedicineCard.jsx   # Displays individual medicine items
+│   │   │   ├── SearchFilters.jsx  # Form for search criteria
+│   │   │   ├── CartItem.jsx       # Displays individual items in cart
+│   │   │   ├── Loader.jsx         # Loading spinner
+│   │   │   └── ToastNotification.jsx # Temporary messages
+│   │
+│   │   ├── services/            # Axios API calls (abstracted)
+│   │   │   ├── auth.js          # User authentication API calls
+│   │   │   ├── medicine.js      # Medicine-related API calls
+│   │   │   ├── orders.js        # Order/cart-related API calls (conceptual)
+│   │   │   └── admin.js         # Admin-specific API calls (conceptual)
+│   │
+│   │   ├── context/             # React context providers
+│   │   │   └── AuthContext.jsx  # Manages global authentication state
+│   │
+│   │   ├── assets/              # Static assets (logos, icons)
+│   │   │   └── logo.png
+│   │   └── styles/              # Global CSS files
+│   │       └── app.css          # Main application styles
+│   │
+│   ├── package.json             # Node.js project manifest (dependencies, scripts)
+│   ├── vite.config.js           # Vite build configuration
+│   └── .env                     # Frontend environment variables (e.g., VITE_API_URL)
+│   └── node_modules/            # Node.js dependencies (installed by npm)
+

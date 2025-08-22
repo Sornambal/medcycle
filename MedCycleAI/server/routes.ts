@@ -9,7 +9,6 @@ import { insertUserSchema, insertMedicineSchema, insertCartSchema } from "@share
 import { aiVerifyUser, aiVerifyMedicine } from "./services/aiVerification";
 import { extractMedicineData } from "./services/ocr";
 import { calculateDistance } from "./services/geolocation";
-import { stripeService } from './services/stripeService';
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-jwt-secret";
 
@@ -19,7 +18,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
 
-  // Middleware for authentication
+// Middleware for authentication
 import { Request } from 'express';
 
 interface AuthenticatedRequest extends Request {
@@ -163,7 +162,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/auth/me", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-      if (req.user.role === "admin") {
+      if (req.user?.role === "admin") {
         res.json({
           id: "admin",
           email: "admin@medcycle.com",
@@ -173,7 +172,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
 
-      const user = await storage.getUser(req.user.userId);
+      const user = await storage.getUser(req.user?.userId || '');
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -192,7 +191,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Parse boolean values correctly
       const medicineData = insertMedicineSchema.parse({
         ...req.body,
-        senderId: req.user.userId,
+        senderId: req.user?.userId,
         quantity: parseInt(req.body.quantity),
         isSealed: req.body.isSealed === 'true' || req.body.isSealed === true,
         isApproved: false, // Always set to false initially for admin approval
@@ -277,7 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/medicines/my-medicines", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-      const medicines = await storage.getMedicinesBySender(req.user.userId);
+      const medicines = await storage.getMedicinesBySender(req.user?.userId || '');
       res.json(medicines);
     } catch (error: any) {
       console.error("Get my medicines error:", error);
@@ -290,7 +289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const cartData = insertCartSchema.parse({
         ...req.body,
-        userId: req.user.userId,
+        userId: req.user?.userId,
       });
 
       const cartItem = await storage.addToCart(cartData);
@@ -303,7 +302,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/cart", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-      const cartItems = await storage.getCartByUser(req.user.userId);
+      const cartItems = await storage.getCartByUser(req.user?.userId || '');
       res.json(cartItems);
     } catch (error: any) {
       console.error("Get cart error:", error);
@@ -338,7 +337,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { deliveryAddress } = req.body;
       
       // Get cart items
-      const cartItems = await storage.getCartByUser(req.user.userId);
+      const cartItems = await storage.getCartByUser(req.user?.userId || '');
       
       if (cartItems.length === 0) {
         return res.status(400).json({ message: "Cart is empty" });
@@ -346,19 +345,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Calculate total
       let totalAmount = 0;
-      for (const item of cartItems) {
+      for (const item of cartItems as any[]) {
         totalAmount += parseFloat(item.unitPrice || '0') * item.quantity;
       }
 
       // Create order
       const order = await storage.createOrder({
-        buyerId: req.user.userId,
+        buyerId: req.user?.userId || '',
         totalAmount: totalAmount.toString(),
         deliveryAddress,
       });
 
       // Add order items
-      for (const item of cartItems) {
+      for (const item of cartItems as any[]) {
         const unitPrice = parseFloat(item.unitPrice || '0');
         const totalPrice = unitPrice * item.quantity;
         
@@ -373,7 +372,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Clear cart
-      await storage.clearCart(req.user.userId);
+      await storage.clearCart(req.user?.userId || '');
 
       res.status(201).json({
         message: "Order created successfully",
@@ -387,7 +386,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/orders", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-      const orders = await storage.getOrdersByUser(req.user.userId);
+      const orders = await storage.getOrdersByUser(req.user?.userId || '');
       res.json(orders);
     } catch (error: any) {
       console.error("Get orders error:", error);
@@ -408,172 +407,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create Stripe payment intent
-  app.post("/api/create-payment-intent", authenticateToken, async (req: AuthenticatedRequest, res) => {
-  try {
-    const { amount, orderId } = req.body;
-    
-    if (!amount || !orderId) {
-      return res.status(400).json({ message: "Amount and orderId are required" });
-    }
-
-    const paymentIntent = await stripeService.createPaymentIntent({
-      amount: parseFloat(amount),
-      orderId,
-      customerEmail: req.user!.email,
-    });
-
-    res.json({
-      clientSecret: paymentIntent.clientSecret,
-      paymentIntentId: paymentIntent.paymentIntentId,
-    });
-  } catch (error: any) {
-    console.error("Create payment intent error:", error);
-    res.status(500).json({ message: "Failed to create payment intent" });
-  }
-});
-
-  // New endpoint: Create order with Stripe payment (atomic operation)
-  app.post("/api/create-order-with-payment", authenticateToken, async (req: AuthenticatedRequest, res) => {
-    try {
-      const { deliveryAddress, cartItems, paymentMethodId } = req.body;
-      
-      if (!cartItems?.length) {
-        return res.status(400).json({ message: "Cart is empty" });
-      }
-
-      // Calculate total
-      const totalAmount = cartItems.reduce((sum: number, item: any) => 
-        sum + (parseFloat(item.unitPrice || '0') * item.quantity), 0);
-
-      // Create payment intent FIRST
-      const paymentIntent = await stripeService.createPaymentIntent({
-        amount: totalAmount,
-        orderId: 'temp_' + Date.now(),
-        customerEmail: req.user!.email,
-      });
-
-      // Create order only after successful payment intent
-      const order = await storage.createOrder({
-        buyerId: req.user!.userId,
-        totalAmount: totalAmount.toString(),
-        deliveryAddress,
-      });
-
-      // Add order items
-      for (const item of cartItems) {
-        await storage.addOrderItem({
-          orderId: order.id,
-          medicineId: item.medicineId,
-          senderId: item.senderId || '',
-          quantity: item.quantity,
-          unitPrice: item.unitPrice || '0',
-          totalPrice: (parseFloat(item.unitPrice || '0') * item.quantity).toString(),
-        });
-      }
-
-      // Clear cart
-      await storage.clearCart(req.user!.userId);
-
-      res.json({
-        clientSecret: paymentIntent.clientSecret,
-        orderId: order.id,
-        message: "Order created successfully with payment"
-      });
-
-    } catch (error: any) {
-      console.error("Create order with payment error:", error);
-      res.status(500).json({ message: "Failed to create order with payment" });
-    }
-  });
-
-  // Stripe webhook endpoint for payment confirmations
-  app.post("/api/webhooks/stripe", express.raw({ type: 'application/json' }), async (req: Request, res: express.Response) => {
-    const sig = req.headers['stripe-signature'] as string;
-    let event;
-
-    try {
-      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-    } catch (err: any) {
-      console.error("Webhook signature verification failed:", err);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object;
-        if (paymentIntent.metadata.orderId) {
-          await storage.updateOrderPayment(
-            paymentIntent.metadata.orderId,
-            paymentIntent.id,
-            'paid'
-          );
-        }
-        break;
-        
-      case 'payment_intent.payment_failed':
-        const failedPayment = event.data.object;
-        if (failedPayment.metadata.orderId) {
-          await storage.updateOrderPayment(
-            failedPayment.metadata.orderId,
-            failedPayment.id,
-            'failed'
-          );
-        }
-        break;
-        
-      default:
-        console.log(`Unhandled event type ${event.type}`);
-    }
-
-    res.json({ received: true });
-  });
-
-// Confirm Stripe payment
-  app.post("/api/orders/:id/confirm-payment", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
-  try {
-    const { paymentIntentId } = req.body;
-    
-    if (!paymentIntentId) {
-      return res.status(400).json({ message: "Payment intent ID is required" });
-    }
-
-    const paymentResult = await stripeService.confirmPayment(paymentIntentId);
-    
-    if (paymentResult.success) {
-      const order = await storage.updateOrderPayment(
-        req.params.id,
-        paymentResult.paymentId,
-        "paid"
-      );
-      
-      res.json({
-        message: "Payment confirmed successfully",
-        order,
-        paymentId: paymentResult.paymentId,
-        amount: paymentResult.amount,
-        currency: paymentResult.currency,
-      });
-    } else {
-      res.status(400).json({ message: paymentResult.error });
-    }
-  } catch (error: any) {
-    console.error("Confirm payment error:", error);
-    res.status(500).json({ message: "Failed to confirm payment" });
-  }
-});
-
-// Legacy payment endpoint (deprecated - use Stripe instead)
+  // Dummy payment endpoint
   app.post("/api/orders/:id/payment", authenticateToken, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-        const { paymentMethod } = req.body;
+      const { paymentMethod } = req.body;
       
       let paymentId: string;
       let paymentStatus: string;
       
-      // Process regular payment (test mode)
-      paymentId = `pay_${Date.now()}`;
+      // Process dummy payment
+      paymentId = `pay_dummy_${Date.now()}`;
       paymentStatus = "paid";
       
       const order = await storage.updateOrderPayment(req.params.id, paymentId, paymentStatus);
@@ -613,7 +456,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/users/:id/approve", authenticateToken, authenticateAdmin, async (req: AuthenticatedRequest, res: express.Response) => {
     try {
-      const user = await storage.approveUser(req.params.id, req.user.userId);
+      const user = await storage.approveUser(req.params.id, req.user?.userId || '');
       res.json({
         message: "User approved successfully",
         user
@@ -668,9 +511,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-app.post("/api/admin/medicines/:id/approve", authenticateToken, authenticateAdmin, async (req: AuthenticatedRequest, res) => {
+  app.post("/api/admin/medicines/:id/approve", authenticateToken, authenticateAdmin, async (req: AuthenticatedRequest, res) => {
     try {
-const medicine = await storage.approveMedicine(req.params.id, req.user.userId); // Ensure this user ID exists
+      const medicine = await storage.approveMedicine(req.params.id, req.user?.userId || '');
       res.json({
         message: "Medicine approved successfully",
         medicine

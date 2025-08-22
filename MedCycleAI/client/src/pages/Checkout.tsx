@@ -6,21 +6,16 @@ import { z } from 'zod';
 import { useLocation } from 'wouter';
 import { NavigationHeader } from '@/components/NavigationHeader';
 import { Button } from '@/components/ui/button';
-import StripeButton from '@/components/StripeButton';
+import DummyPaymentButton from '@/components/DummyPaymentButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { orderService } from '@/services/orders';
-import { CreditCard, Lock, University } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
 const checkoutSchema = z.object({
   deliveryAddress: z.string().min(10, 'Please provide a detailed delivery address'),
-  paymentMethod: z.enum(['card', 'netbanking'], {
-    required_error: 'Please select a payment method',
-  }),
 });
 
 type CheckoutForm = z.infer<typeof checkoutSchema>;
@@ -29,14 +24,13 @@ export default function Checkout() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showStripePayment, setShowStripePayment] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
 
   const form = useForm<CheckoutForm>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
       deliveryAddress: '',
-      paymentMethod: undefined,
     },
   });
 
@@ -57,7 +51,7 @@ export default function Checkout() {
     mutationFn: orderService.createOrder,
     onSuccess: (data) => {
       setOrderId(data.order.id);
-      setShowStripePayment(true);
+      setShowPayment(true);
     },
     onError: (error: Error) => {
       toast({
@@ -69,21 +63,12 @@ export default function Checkout() {
     },
   });
 
-  const handleStripePaymentSuccess = (paymentIntentId: string) => {
+  const handleDummyPaymentSuccess = () => {
     toast({
       title: 'Payment Successful',
       description: 'Your order has been placed successfully!',
     });
     setLocation(`/order-confirmation/${orderId}`);
-  };
-
-  const handleStripePaymentError = (error: string) => {
-    toast({
-      title: 'Payment Failed',
-      description: error,
-      variant: 'destructive',
-    });
-    setIsProcessing(false);
   };
 
   const onSubmit = (data: CheckoutForm) => {
@@ -211,45 +196,7 @@ export default function Checkout() {
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="paymentMethod"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Payment Method</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="space-y-4"
-                          >
-                            <div className="border border-gray-200 rounded-lg p-4">
-                              <div className="flex items-center space-x-3">
-                                <RadioGroupItem value="card" id="card" />
-                                <Label htmlFor="card" className="flex items-center cursor-pointer">
-                                  <CreditCard className="w-6 h-6 mr-3 text-green-600" />
-                                  <span>Credit / Debit Card (Stripe)</span>
-                                </Label>
-                              </div>
-                            </div>
-                            
-                            <div className="border border-gray-200 rounded-lg p-4">
-                              <div className="flex items-center space-x-3">
-                                <RadioGroupItem value="netbanking" id="netbanking" />
-                                <Label htmlFor="netbanking" className="flex items-center cursor-pointer">
-                                  <University className="w-6 h-6 mr-3 text-purple-600" />
-                                  <span>Net Banking</span>
-                                </Label>
-                              </div>
-                            </div>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {!showStripePayment ? (
+                  {!showPayment ? (
                     <Button
                       type="submit"
                       className="w-full bg-green-600 hover:bg-green-700"
@@ -263,11 +210,10 @@ export default function Checkout() {
                       Proceed to Payment
                     </Button>
                   ) : (
-                    <StripeButton
+                    <DummyPaymentButton
                       amount={total}
                       orderId={orderId!}
-                      onPaymentSuccess={handleStripePaymentSuccess}
-                      onPaymentError={handleStripePaymentError}
+                      onPaymentSuccess={handleDummyPaymentSuccess}
                     />
                   )}
                 </form>

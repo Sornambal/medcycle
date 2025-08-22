@@ -3,6 +3,10 @@ import { Link } from 'wouter';
 import { Pill, Shield, MapPin, Recycle, Heart, Gift, Users, Phone, Mail, MapPin as MapPinIcon } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
+// Added: import local images from the same folder
+import img1 from "./img1.jpg";
+import img2 from "./img2.jpg";
+
 export default function Landing() {
   const { user } = useAuth();
   
@@ -28,7 +32,7 @@ export default function Landing() {
                 </Button>
               </Link>
               <Link href="/login">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+                <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-50" >
                   <i className="fas fa-sign-in-alt mr-2"></i>Login
                 </Button>
               </Link>
@@ -40,7 +44,7 @@ export default function Landing() {
             </div>
             <div className="mt-4 text-center">
               <p className="text-sm text-blue-100">
-                Admin credentials: username: admin, password: admin
+               
               </p>
             </div>
           </div>
@@ -124,7 +128,8 @@ export default function Landing() {
             </div>
             
             <div>
-              <img src="C:\Users\SORNAMBAL\Downloads\hard\1@med.png" 
+              <img 
+                   src={img1}
                    alt="Medicine Donation" 
                    className="w-full h-64 object-cover rounded-lg shadow-lg" />
             </div>
@@ -241,7 +246,8 @@ export default function Landing() {
             </div>
             
             <div>
-              <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+              <img 
+                   src={img2}
                    alt="Healthcare Team" 
                    className="w-full h-64 object-cover rounded-lg shadow-lg" />
             </div>

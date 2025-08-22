@@ -4,6 +4,7 @@ import { NavigationHeader } from '@/components/NavigationHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { orderService } from '@/services/orders';
+import { PDFGenerator, defaultCompanyInfo } from '../lib/pdfGenerator.ts';
 import { CheckCircle, MapPin, Download, ArrowLeft } from 'lucide-react';
 
 export default function OrderConfirmation() {
@@ -23,8 +24,34 @@ export default function OrderConfirmation() {
   };
 
   const handleDownloadBill = () => {
-    // In a real implementation, this would generate and download a PDF bill
-    alert('Bill download functionality would be implemented here.');
+    if (!order) return;
+    
+    // Create bill data structure for PDF generation
+    const billData = {
+      order: {
+        ...order,
+        items: [
+          // This would normally come from the order items API
+          // For now, we'll use a placeholder
+          {
+            name: 'Medicine Item',
+            company: 'Pharma Co.',
+            quantity: 1,
+            unitPrice: order.totalAmount,
+            totalPrice: order.totalAmount,
+            senderName: 'MedCycle Seller'
+          }
+        ],
+        buyer: {
+          organizationName: 'Healthcare Organization',
+          email: 'customer@example.com',
+          mobile: '+91-9876543210'
+        }
+      },
+      companyInfo: defaultCompanyInfo
+    };
+
+    PDFGenerator.downloadBill(billData);
   };
 
   const handleContinueShopping = () => {

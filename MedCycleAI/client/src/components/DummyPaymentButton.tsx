@@ -51,9 +51,9 @@ export default function DummyPaymentButton({ amount, orderId, onPaymentSuccess }
   return (
     <div className="space-y-4">
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold mb-2">Dummy Payment</h4>
+        <h4 className="font-semibold mb-2">Test Payment</h4>
         <p className="text-sm text-gray-600 mb-4">
-          This is a dummy payment for testing purposes. No actual payment will be processed.
+          This is  payment for testing purposes. No actual payment will be processed.
         </p>
         <div className="text-lg font-bold mb-2">
           Total: ₹{amount.toFixed(2)}

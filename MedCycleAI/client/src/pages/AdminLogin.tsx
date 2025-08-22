@@ -113,12 +113,7 @@ export default function AdminLogin() {
               </form>
             </Form>
 
-            <Alert className="mt-4 border-yellow-200 bg-yellow-50">
-              <Info className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-800">
-                Default credentials: admin / admin
-              </AlertDescription>
-            </Alert>
+            
           </CardContent>
         </Card>
       </div>
